@@ -22,6 +22,7 @@ plugins {
     alias(libs.plugins.room)
     alias(libs.plugins.spotless)
     alias(libs.plugins.baselineprofile)
+    alias(libs.plugins.kotlin.compose)
 }
 
 fun getAbi() = if (hasProperty("abi")) {
@@ -32,12 +33,12 @@ fun getAbi() = if (hasProperty("abi")) {
 
 android {
     namespace = "com.ammar.wallflow"
-    compileSdk = 34
+    compileSdk = 35
 
     defaultConfig {
         applicationId = "com.ammar.wallflow"
         minSdk = 24
-        targetSdk = 34
+        targetSdk = 35
         versionCode = 22
         versionName = "2.6.0-alpha01"
 
@@ -56,19 +57,6 @@ android {
         }
     }
 
-    signingConfigs {
-        if (!hasProperty("github") && !hasProperty("fdroid")) {
-            create("release") {
-                storeFile = file(localProperties.getProperty("release.jks.file", ""))
-                storePassword = localProperties.getProperty("release.jks.password", "")
-                keyAlias = localProperties.getProperty("release.jks.key.alias", "")
-                keyPassword = localProperties.getProperty("release.jks.key.password", "")
-                enableV3Signing = true
-                enableV4Signing = true
-            }
-        }
-    }
-
     buildTypes {
         getByName("debug") {
             applicationIdSuffix = ".debug"
@@ -83,9 +71,6 @@ android {
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro",
             )
-            if (!hasProperty("github") && !hasProperty("fdroid")) {
-                signingConfig = signingConfigs.getByName("release")
-            }
         }
 
         create("alpha") {
@@ -127,12 +112,13 @@ android {
         }
     }
 
+    val isAbiSplitsEnabled = splits.abi.isEnable
     androidComponents {
         onVariants { variant ->
             variant.outputs.forEach { output ->
                 val abi = if (hasProperty("fdroid")) {
                     getAbi()
-                } else if (project.android.splits.abi.isEnable) {
+                } else if (isAbiSplitsEnabled) {
                     output.filters.find { it.filterType == ABI }?.identifier
                 } else {
                     null
@@ -151,20 +137,11 @@ android {
         isCoreLibraryDesugaringEnabled = true
     }
 
-    kotlinOptions {
-        jvmTarget = "17"
-    }
-
     buildFeatures {
         compose = true
         aidl = false
         buildConfig = true
-        renderScript = false
         shaders = false
-    }
-
-    composeOptions {
-        kotlinCompilerExtensionVersion = libs.versions.androidxComposeCompiler.get()
     }
 
     packaging {
@@ -196,7 +173,7 @@ android {
     }
 
     sourceSets {
-        getByName("androidTest").assets.srcDir("$projectDir/schemas")
+        getByName("androidTest").assets.directories.add("schemas")
     }
 
     androidResources {

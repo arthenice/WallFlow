@@ -24,26 +24,29 @@ plugins {
     alias(libs.plugins.ksp) apply false
     alias(libs.plugins.spotless)
     alias(libs.plugins.baselineprofile) apply false
+    alias(libs.plugins.kotlin.compose) apply false
 }
 
 subprojects {
     tasks.withType<KotlinCompile>().configureEach {
-        kotlinOptions {
+        compilerOptions {
             val pluginPrefix = "plugin:androidx.compose.compiler.plugins.kotlin"
             val buildDirPath = layout.buildDirectory.asFile.get().absolutePath
             val destination = "${buildDirPath}/compose_compiler"
+
             if (project.findProperty("composeCompilerReports") == "true") {
-                freeCompilerArgs += listOf(
+                freeCompilerArgs.addAll(
                     "-P",
                     "$pluginPrefix:reportsDestination=$destination",
                 )
             }
             if (project.findProperty("composeCompilerMetrics") == "true") {
-                freeCompilerArgs += listOf(
+                freeCompilerArgs.addAll(
                     "-P",
                     "$pluginPrefix:metricsDestination=$destination",
                 )
             }
+
         }
     }
 }

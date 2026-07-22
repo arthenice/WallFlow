@@ -64,7 +64,7 @@ import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.test.StandardTestDispatcher
 import kotlinx.coroutines.test.TestScope
 import kotlinx.coroutines.test.runTest
-import kotlinx.datetime.Clock
+import kotlin.time.Clock
 import kotlinx.datetime.Instant
 import okio.buffer
 import okio.source

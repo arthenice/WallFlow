@@ -25,20 +25,16 @@ plugins {
     alias(libs.plugins.kotlin.compose)
 }
 
-fun getAbi() = if (hasProperty("abi")) {
-    property("abi").toString()
-} else {
-    null
-}
+fun getAbi() = providers.gradleProperty("abi").orNull
 
 android {
     namespace = "com.ammar.wallflow"
-    compileSdk = 35
+    compileSdk = 37
 
     defaultConfig {
         applicationId = "com.ammar.wallflow"
         minSdk = 24
-        targetSdk = 35
+        targetSdk = 37
         versionCode = 22
         versionName = "2.6.0-alpha01"
 
@@ -94,11 +90,10 @@ android {
         // Configures multiple APKs based on ABI.
         abi {
             // Enables building multiple APKs per ABI.
-            isEnable = !hasProperty("fdroid")
-                && !hasProperty("noSplits")
-                && gradle.startParameter.taskNames.isNotEmpty()
+            isEnable = providers.gradleProperty("fdroid").isPresent.not()
+                && providers.gradleProperty("noSplits").isPresent.not()
                 && gradle.startParameter.taskNames.any {
-                it.contains("Release") || it.contains("Alpha")
+                it.contains("Release", ignoreCase = true) || it.contains("Alpha", ignoreCase = true)
             }
 
             // Resets the list of ABIs that Gradle should create APKs for to none.
@@ -112,22 +107,19 @@ android {
         }
     }
 
-    val isAbiSplitsEnabled = splits.abi.isEnable
     androidComponents {
         onVariants { variant ->
+            val isAbiSplitsEnabled = splits.abi.isEnable
             variant.outputs.forEach { output ->
-                val abi = if (hasProperty("fdroid")) {
-                    getAbi()
-                } else if (isAbiSplitsEnabled) {
-                    output.filters.find { it.filterType == ABI }?.identifier
-                } else {
-                    null
+                val abi = when {
+                    providers.gradleProperty("fdroid").isPresent -> getAbi()
+                    isAbiSplitsEnabled -> output.filters.find { it.filterType == ABI }?.identifier
+                    else -> null
                 }
-                if (abi != null) {
-                    val baseAbiCode = abiCodes[abi]
-                    if (baseAbiCode != null) {
-                        output.versionCode.set(baseAbiCode + (output.versionCode.get() ?: 0) * 100)
-                    }
+
+                abi?.let { abiCodes[it] }?.let { baseAbiCode ->
+                    val currentVersionCode = output.versionCode.get() ?: 0
+                    output.versionCode.set(baseAbiCode + currentVersionCode * 100)
                 }
             }
         }
@@ -135,6 +127,8 @@ android {
 
     compileOptions {
         isCoreLibraryDesugaringEnabled = true
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
     }
 
     buildFeatures {
@@ -179,10 +173,11 @@ android {
     androidResources {
         generateLocaleConfig = true
     }
+    buildToolsVersion = "37.0.0"
 }
 
 room {
-    schemaDirectory("$projectDir/schemas/")
+    schemaDirectory(layout.projectDirectory.dir("schemas").asFile.absolutePath)
 }
 
 baselineProfile {
@@ -321,12 +316,12 @@ dependencies {
     implementation(libs.auto.service.annotations)
     ksp(libs.auto.service.ksp)
 
-    // Local tests: jUnit, coroutines, Android runner
+    // Local tests: JUnit, coroutines, Android runner
     testImplementation(libs.junit)
     testImplementation(libs.kotlinx.coroutines.test)
     testImplementation(libs.kotlin.test.junit)
 
-    // Instrumented tests: jUnit rules and runners
+    // Instrumented tests: JUnit rules and runners
     androidTestImplementation(libs.androidx.test.core)
     androidTestImplementation(libs.androidx.test.ext.junit)
     androidTestImplementation(libs.androidx.test.runner)
@@ -347,13 +342,14 @@ spotless {
 }
 
 aboutLibraries {
-    registerAndroidTasks = false
-    excludeFields = arrayOf(
-        "description",
-        "scm",
-        "funding",
-        "website",
-        "organization",
-        "organisationUrl",
-    )
+    export {
+        excludeFields.addAll(
+            "description",
+            "scm",
+            "funding",
+            "website",
+            "organization",
+            "organisationUrl",
+        )
+    }
 }

@@ -73,7 +73,7 @@ import com.ammar.wallflow.ui.common.TagChip
 import com.ammar.wallflow.ui.common.UploaderChip
 import com.ammar.wallflow.ui.theme.WallFlowTheme
 import com.ammar.wallflow.utils.DownloadStatus
-import kotlinx.datetime.Clock
+import kotlin.time.Clock
 
 @Composable
 fun WallpaperActions(

@@ -1,7 +1,7 @@
 package com.ammar.wallflow.utils
 
 import kotlin.time.Duration
-import kotlinx.datetime.Clock
+import kotlin.time.Clock
 import kotlinx.datetime.DateTimeUnit
 import kotlinx.datetime.Instant
 import kotlinx.datetime.minus

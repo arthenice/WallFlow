@@ -11,7 +11,7 @@ import com.ammar.wallflow.data.network.model.reddit.toWallpaperEntities
 import com.ammar.wallflow.data.network.model.wallhaven.toEntity
 import com.ammar.wallflow.data.network.model.wallhaven.toWallpaperEntity
 import kotlin.random.Random
-import kotlinx.datetime.Clock
+import kotlin.time.Clock
 
 suspend fun insertWallhavenEntities(
     random: Random,

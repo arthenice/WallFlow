@@ -57,7 +57,7 @@ import com.ammar.wallflow.ui.theme.WallFlowTheme
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toPersistentList
-import kotlinx.datetime.Clock
+import kotlin.time.Clock
 
 internal fun LazyStaggeredGridScope.header(
     sources: ImmutableList<OnlineSource> = persistentListOf(),

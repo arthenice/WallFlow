@@ -31,7 +31,7 @@ import com.ammar.wallflow.model.search.RedditSearch
 import com.ammar.wallflow.model.search.Search
 import com.ammar.wallflow.model.search.WallhavenSearch
 import java.io.IOException
-import kotlinx.datetime.Clock
+import kotlin.time.Clock
 import kotlinx.serialization.encodeToString
 import retrofit2.HttpException
 

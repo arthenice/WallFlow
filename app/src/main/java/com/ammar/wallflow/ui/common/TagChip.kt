@@ -25,7 +25,7 @@ import com.ammar.wallflow.model.wallhaven.WallhavenTag
 import com.ammar.wallflow.ui.theme.WallFlowTheme
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.collectLatest
-import kotlinx.datetime.Clock
+import kotlin.time.Clock
 
 @Composable
 fun TagChip(

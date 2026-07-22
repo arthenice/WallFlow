@@ -20,7 +20,7 @@ import com.ammar.wallflow.model.search.WallhavenFilters
 import com.ammar.wallflow.model.search.WallhavenSearch
 import kotlin.math.absoluteValue
 import kotlin.random.Random
-import kotlinx.datetime.Clock
+import kotlin.time.Clock
 
 object MockFactory {
     fun generateNetworkWallhavenWallpapers(

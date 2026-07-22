@@ -49,7 +49,7 @@ import kotlin.test.assertTrue
 import kotlin.time.Duration.Companion.days
 import kotlinx.coroutines.test.StandardTestDispatcher
 import kotlinx.coroutines.test.runTest
-import kotlinx.datetime.Clock
+import kotlin.time.Clock
 import kotlinx.datetime.Instant
 import org.junit.After
 import org.junit.Before

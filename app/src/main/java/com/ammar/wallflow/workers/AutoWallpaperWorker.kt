@@ -97,7 +97,7 @@ import java.util.concurrent.TimeUnit
 import kotlin.math.max
 import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.flow.map
-import kotlinx.datetime.Clock
+import kotlin.time.Clock
 import kotlinx.datetime.DateTimePeriod
 import okhttp3.OkHttpClient
 

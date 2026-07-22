@@ -25,7 +25,7 @@ import kotlin.test.assertNotNull
 import kotlin.test.assertNull
 import kotlinx.coroutines.test.StandardTestDispatcher
 import kotlinx.coroutines.test.runTest
-import kotlinx.datetime.Clock
+import kotlin.time.Clock
 import org.junit.After
 import org.junit.Before
 import org.junit.Test

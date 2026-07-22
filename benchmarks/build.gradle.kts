@@ -9,11 +9,11 @@ plugins {
 
 android {
     namespace = "com.ammar.wallflow.benchmarks"
-    compileSdk = 35
+    compileSdk = 37
 
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_11
-        targetCompatibility = JavaVersion.VERSION_11
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
     }
 
     kotlin {
@@ -46,6 +46,16 @@ android {
             }
         }
     }
+    buildTypes {
+        create("alpha") {
+        }
+        create("benchmarkAlpha") {
+        }
+        create("nonMinifiedAlpha") {
+        }
+    }
+    compileSdkMinor = 0
+    buildToolsVersion = "37.0.0"
 }
 
 baselineProfile {

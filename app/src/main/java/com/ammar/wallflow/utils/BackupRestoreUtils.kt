@@ -37,7 +37,7 @@ import com.ammar.wallflow.model.search.WallhavenFilters
 import com.ammar.wallflow.safeJson
 import com.lazygeniouz.dfc.file.DocumentFileCompat
 import kotlinx.coroutines.flow.firstOrNull
-import kotlinx.datetime.Clock
+import kotlin.time.Clock
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.JsonArray

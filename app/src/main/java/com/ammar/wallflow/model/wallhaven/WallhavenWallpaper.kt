@@ -14,7 +14,7 @@ import com.ammar.wallflow.model.Purity
 import com.ammar.wallflow.model.Source
 import com.ammar.wallflow.model.serializers.ColorSerializer
 import com.ammar.wallflow.model.serializers.IntSizeSerializer
-import kotlinx.datetime.Clock
+import kotlin.time.Clock
 import kotlinx.datetime.Instant
 import kotlinx.serialization.UseSerializers
 
